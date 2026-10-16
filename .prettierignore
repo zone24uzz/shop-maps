@@ -1,0 +1,14 @@
+node_modules
+package-lock.json
+.next
+out
+build
+coverage
+test-results
+playwright-report
+e2e/screenshots
+backend/.mongo-data
+next-env.d.ts
+# Generated and rewritten by `next dev`.
+frontend/AGENTS.md
+frontend/CLAUDE.md

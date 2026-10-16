@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Environment files — never commit real values
+.env
+.env.*
+!.env.example
+
+# Build output
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# Local embedded MongoDB data (npm run db:start)
+.mongo-data/
+
+# Test output
+coverage/
+test-results/
+playwright-report/
+e2e/screenshots/
+
+# Logs and OS noise
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

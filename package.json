@@ -1,0 +1,32 @@
+{
+  "name": "logistics-map",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Logistics & delivery location map for Tashkent — Express/MongoDB API with a Next.js dashboard.",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "dev": "concurrently --names db,api,web --prefix-colors gray,green,blue \"npm run db:start\" \"npm run dev -w backend\" \"npm run dev -w frontend\"",
+    "dev:api": "npm run dev -w backend",
+    "dev:web": "npm run dev -w frontend",
+    "db:start": "npm run db:start -w backend",
+    "build": "npm run build -w frontend",
+    "start": "concurrently --names api,web --prefix-colors green,blue \"npm run start -w backend\" \"npm run start -w frontend\"",
+    "lint": "npm run lint -w backend && npm run lint -w frontend",
+    "typecheck": "npm run typecheck -w frontend",
+    "test": "npm run test -w backend && npm run test -w frontend",
+    "test:e2e": "playwright test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "concurrently": "10.0.6",
+    "prettier": "3.9.10"
+  }
+}

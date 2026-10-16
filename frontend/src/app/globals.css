@@ -1,0 +1,281 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens. The default Tailwind palette is removed on purpose so every
+ * colour used in the app comes from this list.
+ */
+@theme {
+  --color-*: initial;
+
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Surfaces */
+  --color-canvas: #eef0f3;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f5f6f8;
+  --color-line: #dde1e7;
+  --color-line-strong: #c3cad4;
+  /* Boundary of form fields: at least 3:1 against both surface and canvas. */
+  --color-control: #7b8593;
+
+  /* Text */
+  --color-ink: #16202e;
+  --color-ink-soft: #3a4656;
+  --color-muted: #5c6877;
+  --color-faint: #8892a0;
+  --color-on-dark-muted: #aab4c2;
+
+  /* Brand: signage blue, reserved for interaction and selection */
+  --color-primary: #1554d1;
+  --color-primary-hover: #0f44ad;
+  --color-primary-soft: #e9f0fd;
+  --color-primary-line: #b5cbf5;
+
+  /* Status */
+  --color-success: #0b7a55;
+  --color-success-bright: #35c48f;
+  --color-warning: #8f5400;
+  --color-warning-soft: #fdf2d9;
+  --color-warning-line: #edd39b;
+  --color-warning-bright: #f3c463;
+  --color-danger: #b42820;
+  --color-danger-soft: #fdeceb;
+  --color-danger-line: #f1bfbb;
+  --color-danger-bright: #ff8f87;
+
+  --font-sans: var(--font-barlow), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display:
+    var(--font-barlow-semi-condensed), var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-control: 0 1px 2px rgb(22 32 46 / 0.12);
+  --shadow-overlay: 0 1px 2px rgb(22 32 46 / 0.1), 0 10px 28px -8px rgb(22 32 46 / 0.28);
+
+  --animate-marker-ping: marker-ping 1.4s ease-out 2;
+
+  @keyframes marker-ping {
+    0% {
+      transform: scale(0.6);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* The native clear button is replaced by our own, keyboard-reachable one. */
+  input[type='search']::-webkit-search-cancel-button {
+    appearance: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+ * Leaflet
+ * Third-party markup that Tailwind utilities cannot reach.
+ * ----------------------------------------------------------------------- */
+
+.leaflet-container {
+  font-family: inherit;
+  background: var(--color-surface-muted);
+  /* Keep Leaflet's internal stacking (up to 1000) below app overlays. */
+  isolation: isolate;
+}
+
+/* Calm the basemap slightly so markers and overlays lead. */
+.leaflet-tile-pane {
+  filter: saturate(0.8);
+}
+
+.leaflet-container :focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* The map box and the zoom bar clip their overflow, which would cut off an
+   outline drawn outside the element. Draw these focus rings inside instead. */
+.leaflet-container:focus-visible,
+.leaflet-bar a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+/* Zoom control */
+.leaflet-touch .leaflet-bar,
+.leaflet-bar {
+  border: 1px solid var(--color-line-strong);
+  border-radius: 6px;
+  box-shadow: var(--shadow-control);
+  overflow: hidden;
+}
+
+.leaflet-touch .leaflet-bar a,
+.leaflet-bar a {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  color: var(--color-ink);
+  font-size: 20px;
+  border-bottom-color: var(--color-line);
+}
+
+.leaflet-bar a:hover,
+.leaflet-bar a:focus-visible {
+  background: var(--color-surface-muted);
+  color: var(--color-primary);
+}
+
+.leaflet-bar a.leaflet-disabled {
+  background: var(--color-surface-muted);
+  color: var(--color-faint);
+}
+
+.leaflet-control-attribution {
+  font-size: 11px;
+  color: var(--color-muted);
+}
+
+.leaflet-control-scale-line {
+  border-color: var(--color-ink-soft);
+  color: var(--color-ink-soft);
+  font-size: 11px;
+  background: rgb(255 255 255 / 0.8);
+}
+
+/* Popup */
+.leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 6px;
+  color: var(--color-ink);
+  box-shadow: var(--shadow-overlay);
+}
+
+/* leaflet.css gives paragraphs in a popup a large margin and, being
+   unlayered, wins over Tailwind's reset. */
+.leaflet-popup-content p {
+  margin: 0;
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  min-width: 13.5rem;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.leaflet-popup-tip {
+  box-shadow: none;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  top: 6px;
+  right: 6px;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  color: var(--color-muted);
+  font: 400 20px/28px var(--font-sans);
+}
+
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus-visible {
+  background: var(--color-surface-muted);
+  color: var(--color-ink);
+}
+
+/* Store markers (see components/map/markerIcon.ts) */
+.store-marker {
+  background: none;
+  border: 0;
+}
+
+.store-marker svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 2px 2px rgb(22 32 46 / 0.35));
+  transform-origin: 50% 100%;
+  transition: transform 150ms ease;
+}
+
+.store-marker:hover svg {
+  transform: scale(1.1);
+}
+
+.store-marker .pin-body {
+  fill: var(--color-primary);
+  stroke: var(--color-white);
+  stroke-width: 2;
+}
+
+.store-marker .pin-dot {
+  fill: var(--color-white);
+}
+
+.store-marker.is-selected .pin-body {
+  fill: var(--color-ink);
+}
+
+/* Keyboard focus: a ring around the pin. Ink on the basemap is about 14:1
+   and reads against both the blue and the selected pin. */
+.leaflet-container .store-marker:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Ground ring that marks the exact position of the selected store. */
+.store-marker.is-selected::before,
+.store-marker.is-selected::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  margin-left: -7px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.store-marker.is-selected::before {
+  background: rgb(21 84 209 / 0.3);
+  border: 2px solid var(--color-primary);
+}
+
+.store-marker.is-selected::after {
+  border: 2px solid var(--color-primary);
+  animation: var(--animate-marker-ping);
+  opacity: 0;
+}
